@@ -9,7 +9,7 @@ export default class Header extends Component<HeaderProps> {
     const { onRegister, onLogin } = this.props;
     return (
       <header
-        className={`w-full h-[80px] ${styles.center} justify-between px-[50px] bg-[#0D0D12] border-b-[1px] border-[red]`}
+        className={`w-full h-[70px] ${styles.center} justify-between px-[50px] bg-[#0D0D12] border-b-[1px] border-[red]`}
       >
         <div className="logo text-[36px] font-ego_outline tracking-[3px]">
           Movies
