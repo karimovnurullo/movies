@@ -1,33 +1,20 @@
 import React, { Component, createRef } from "react";
 import { styles } from "./style";
 import Menu from "./menu";
-import { IMenus, IMovie } from "../App";
+import { HomeProps, HomeState, IMenus, IMovie } from "../components/utils";
 import Movie from "./movie";
 
-interface HomeProps {
-  menus: IMenus[];
-  movies: IMovie[];
-  notFound: boolean;
-  search: (text: string) => void;
-  handleMenuClick: (id: string, name: string) => void;
-  all: () => void;
-}
-interface HomeState {
-  currentPage: number;
-  moviesPerPage: number;
-}
 export default class Home extends Component<HomeProps, HomeState> {
   inputRef = createRef<HTMLInputElement>();
   state = {
     currentPage: 1,
-    moviesPerPage: 6,
+    moviesPerPage: 5,
   };
   handlePageChange = (pageNumber: number) => {
     this.setState({ currentPage: pageNumber });
   };
   render() {
-    const { menus, movies, handleMenuClick, notFound, all, search } =
-      this.props;
+    const { menus, movies, handleMenuClick, notFound, all, search } = this.props;
     const { currentPage, moviesPerPage } = this.state;
 
     // Pagination calculations
@@ -47,11 +34,7 @@ export default class Home extends Component<HomeProps, HomeState> {
             All movies
           </div>
           {menus.map((data) => (
-            <Menu
-              data={data}
-              key={data._id}
-              handleMenuClick={handleMenuClick}
-            />
+            <Menu data={data} key={data._id} handleMenuClick={handleMenuClick} />
           ))}
         </div>
         <div className="movies relative w-full h-full bg-[#1e1e21] rounded-[20px] p-[10px]">
@@ -98,9 +81,7 @@ export default class Home extends Component<HomeProps, HomeState> {
                   key={index}
                   onClick={() => this.handlePageChange(index + 1)}
                   className={`page-number w-[45px] h-[35px] bg-[#151719] border-[1px] border-[#44444598]  rounded-[10px]${
-                    currentPage === index + 1
-                      ? "active rounded-[10px] text-white font-bold"
-                      : ""
+                    currentPage === index + 1 ? "active rounded-[10px] text-white font-bold" : ""
                   }`}
                 >
                   {index + 1}

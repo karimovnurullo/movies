@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { styles } from "./style";
-import { IMenus } from "../App";
-
-interface MenuProps {
-  data: IMenus;
-  handleMenuClick: (id: string, name: string) => void;
-}
+import { IMenus, MenuProps } from "../components/utils";
 
 export default class Menu extends Component<MenuProps> {
   render() {

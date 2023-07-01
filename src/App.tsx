@@ -1,26 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, FormEvent, FormEventHandler } from "react";
 // import { Route, Redirect, Switch } from "react-router-dom";
 
 import { Header, Home, Register, Login } from "./components";
 import axios from "axios";
-import Test from "./components/test";
+import { AppState, IMovie, baseURL } from "./components/utils";
 
-export const baseURL = "https://pdp-movies-78.onrender.com/api/";
-export interface IMenus {
-  name: string;
-  _id: string;
-}
-export interface IMovie {
-  _id: string;
-  title: string;
-  genre: {
-    name: string;
-    _id: string;
-  };
-  numberInStock: number;
-  dailyRentalRate: number;
-}
-export default class App extends Component {
+export default class App extends Component<{}, AppState> {
   state = {
     menus: [],
     movies: [],
@@ -28,6 +13,7 @@ export default class App extends Component {
     registerBtn: false,
     loginBtn: false,
     notFound: false,
+    currentUser: null,
   };
 
   componentDidMount(): void {
@@ -37,16 +23,15 @@ export default class App extends Component {
 
   getMenus = async () => {
     try {
-      const { data } = await axios.get(`${baseURL}genres`);
+      const { data } = await axios.get(`${baseURL}/genres`);
       this.setState({ menus: data });
     } catch (error) {
       console.log("Error fetching menus:", error);
     }
   };
-
   getMovies = async () => {
     try {
-      const { data } = await axios.get(`${baseURL}movies`);
+      const { data } = await axios.get(`${baseURL}/movies`);
       this.setState({ movies: data });
     } catch (error) {
       console.log("Error fetching movies:", error);
@@ -89,6 +74,32 @@ export default class App extends Component {
     const arr = [...this.state.movies];
     this.setState({ filteredMovies: arr, notFound: false });
   };
+  hanleRegisterSubmit = async (
+    e: FormEvent<HTMLFormElement>,
+    username: string,
+    password: string,
+    name: string
+  ) => {
+    e.preventDefault();
+    if (
+      username.trim().length !== 0 ||
+      password.trim().length !== 0 ||
+      name.trim().length !== 0
+    ) {
+      this.setState({ registerBtn: false });
+      console.log(username);
+      console.log(password);
+      console.log(name);
+
+      const { data } = await axios.post(`${baseURL}/users`, {
+        name,
+        email: username,
+        password,
+      });
+      console.log(data);
+      this.setState({ currentUser: data });
+    }
+  };
 
   render() {
     const { movies, menus, loginBtn, registerBtn, filteredMovies, notFound } =
@@ -100,11 +111,17 @@ export default class App extends Component {
       handleRegister,
       handleRegisterBack,
       handleLoginBack,
+      hanleRegisterSubmit,
     } = this;
     if (loginBtn) {
       return <Login home={handleLoginBack} />;
     } else if (registerBtn) {
-      return <Register home={handleRegisterBack} />;
+      return (
+        <Register
+          home={handleRegisterBack}
+          onRegisterSubmit={hanleRegisterSubmit}
+        />
+      );
     }
 
     return (

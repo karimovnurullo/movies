@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { styles } from "./style";
-import { IMovie } from "../App";
+import { IMovie, MovieProps } from "../components/utils";
 
-interface MovieProps {
-  data: IMovie;
-}
 export default class Movie extends Component<MovieProps> {
   render() {
     const { data } = this.props;
