@@ -1,7 +1,7 @@
 import React, { Component, FormEvent, FormEventHandler } from "react";
 // import { Route, Redirect, Switch } from "react-router-dom";
 
-import { Header, Home, Register, Login } from "./components";
+import { Header, Home, Register, Login, Panel } from "./components";
 import axios from "axios";
 import { AppState, IMovie, baseURL } from "./components/utils";
 
@@ -14,6 +14,7 @@ export default class App extends Component<{}, AppState> {
     loginBtn: false,
     notFound: false,
     currentUser: null,
+    adminPanel: false,
   };
 
   componentDidMount(): void {
@@ -101,9 +102,24 @@ export default class App extends Component<{}, AppState> {
     }
   };
 
+  handleAdminpanel = () => {
+    console.log("Admin panel called");
+  };
+  handleAddSelect = (value: string) => {
+    console.log(`${value} selected`);
+  };
+
   render() {
-    const { movies, menus, loginBtn, registerBtn, filteredMovies, notFound } =
-      this.state;
+    const {
+      movies,
+      menus,
+      loginBtn,
+      registerBtn,
+      filteredMovies,
+      notFound,
+      currentUser,
+      adminPanel,
+    } = this.state;
     const {
       handleSearch,
       handleMenuClick,
@@ -112,6 +128,8 @@ export default class App extends Component<{}, AppState> {
       handleRegisterBack,
       handleLoginBack,
       hanleRegisterSubmit,
+      handleAdminpanel,
+      handleAddSelect,
     } = this;
     if (loginBtn) {
       return <Login home={handleLoginBack} />;
@@ -125,17 +143,23 @@ export default class App extends Component<{}, AppState> {
     }
 
     return (
-      <div>
-        <Header onLogin={this.handleLogin} onRegister={handleRegister} />
-        <Home
-          menus={menus}
-          search={handleSearch}
-          movies={filteredMovies.length > 0 ? filteredMovies : movies}
-          handleMenuClick={handleMenuClick}
-          all={handleAllMenus}
-          notFound={notFound}
-        />
-      </div>
+      // <div>
+      //   <Header
+      //     user={currentUser}
+      //     onLogin={this.handleLogin}
+      //     onRegister={handleRegister}
+      //     adminPanel={handleAdminpanel}
+      //   />
+      //   <Home
+      //     menus={menus}
+      //     search={handleSearch}
+      //     movies={filteredMovies.length > 0 ? filteredMovies : movies}
+      //     handleMenuClick={handleMenuClick}
+      //     all={handleAllMenus}
+      //     notFound={notFound}
+      //   />
+      // </div>
+      <Panel select={handleAddSelect} />
     );
   }
 }

@@ -20,6 +20,8 @@ export interface IMovie {
 export interface HeaderProps {
   onRegister: () => void;
   onLogin: () => void;
+  user: IUser | null;
+  adminPanel: () => void;
 }
 
 export interface HomeProps {
@@ -48,6 +50,11 @@ export interface MovieProps {
   data: IMovie;
 }
 
+export interface IUser {
+  email: string;
+  name: string;
+  _id: string;
+}
 export interface AppState {
   menus: IMenus[];
   movies: IMovie[];
@@ -55,9 +62,10 @@ export interface AppState {
   registerBtn: boolean;
   loginBtn: boolean;
   notFound: boolean;
-  currentUser: {
-    email: string;
-    name: string;
-    _id: string;
-  } | null;
+  currentUser: IUser | null;
+  adminPanel: boolean;
+}
+
+export interface PanelProps {
+  select: (value: string) => void;
 }
