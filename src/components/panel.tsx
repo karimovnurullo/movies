@@ -127,6 +127,28 @@ export default class Panel extends Component {
             console.log("Please fill in all the fields.");
           }
         } else if (actionSelect === "edit") {
+          if (title && stock && rate && genreSelect) {
+            console.log("Movie Form Submitted", {
+              title,
+              genreSelect,
+              stock,
+              rate,
+            });
+          } else {
+            if (!title) {
+              this.titleRef.current?.classList.add("error");
+            }
+            if (!stock) {
+              this.stockRef.current?.classList.add("error");
+            }
+            if (!rate) {
+              this.rateRef.current?.classList.add("error");
+            }
+            if (!genreSelect) {
+              this.rateRef.current?.classList.add("error");
+            }
+            console.log("Please fill in all the fields.");
+          }
           // Handle edit action logic here
         } else if (actionSelect === "delete") {
           // Handle delete action logic here
@@ -234,6 +256,17 @@ export default class Panel extends Component {
               Title
             </label>
             <input type="text" id="title" defaultValue={editMovie.title} ref={this.titleRef} className={`${inputStyle} mt-[-10px]`} />
+            <select
+              onChange={(e) => this.editMovieSelect(e.target.value)}
+              className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
+            >
+              <option value={editGenreSelect._id}></option>
+              {genres.map(({ _id, name }) => (
+                <option value={_id} key={_id}>
+                  {name}
+                </option>
+              ))}
+            </select>
             <label htmlFor="stock" className="text-[22px]">
               Stock
             </label>
