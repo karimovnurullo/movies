@@ -19,6 +19,7 @@ export default class Panel extends Component {
       },
       stock: "",
       rate: "",
+      selected: false,
     },
     genres: [],
     movies: [],
@@ -79,6 +80,7 @@ export default class Panel extends Component {
         },
         stock: movie.numberInStock,
         rate: movie.dailyRentalRate,
+        selected: true,
       },
     });
     console.log(movie, "Selected id");
@@ -161,30 +163,34 @@ export default class Panel extends Component {
     const renderEditSelect = () => {
       if (actionSelect === "edit") {
         return (
-          <>
-            <select
-              onChange={(e) => this.editGenreSelect(e.target.value)}
-              className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
-            >
-              <option>Select Genre</option>
-              {genres.map(({ _id, name }) => (
-                <option value={_id} key={_id}>
-                  {name}
-                </option>
-              ))}
-            </select>
-            <select
-              onChange={(e) => this.editMovieSelect(e.target.value)}
-              className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
-            >
-              <option>Select Menu</option>
-              {filteredMovies.map(({ _id, title }) => (
-                <option value={_id} key={_id}>
-                  {title}
-                </option>
-              ))}
-            </select>
-          </>
+          <select
+            onChange={(e) => this.editGenreSelect(e.target.value)}
+            className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
+          >
+            <option>Select Genre</option>
+            {genres.map(({ _id, name }) => (
+              <option value={_id} key={_id}>
+                {name}
+              </option>
+            ))}
+          </select>
+        );
+      }
+    };
+    const renderMovieSelect = () => {
+      if (editGenreSelect != null) {
+        return (
+          <select
+            onChange={(e) => this.editMovieSelect(e.target.value)}
+            className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
+          >
+            <option>Select Movie</option>
+            {filteredMovies.map(({ _id, title }) => (
+              <option value={_id} key={_id}>
+                {title}
+              </option>
+            ))}
+          </select>
         );
       }
     };
@@ -221,7 +227,7 @@ export default class Panel extends Component {
             </button>
           </>
         );
-      } else if (actionSelect === "edit") {
+      } else if (editMovie.selected) {
         return (
           <>
             <label htmlFor="title" className="text-[22px]">
@@ -270,6 +276,7 @@ export default class Panel extends Component {
           <form className="flex flex-col gap-[20px] mt-[10px]" onSubmit={handleSubmit}>
             {renderSelect()}
             {renderEditSelect()}
+            {renderMovieSelect()}
             {renderInputs()}
           </form>
         </div>
