@@ -14,7 +14,7 @@ export default class Home extends Component<HomeProps, HomeState> {
     this.setState({ currentPage: pageNumber });
   };
   render() {
-    const { menus, movies, handleMenuClick, notFound, all, search } = this.props;
+    const { menus, movies, handleMenuClick, notFound, all, search, activeMenu } = this.props;
     const { currentPage, moviesPerPage } = this.state;
 
     // Pagination calculations
@@ -34,7 +34,7 @@ export default class Home extends Component<HomeProps, HomeState> {
             All movies
           </div>
           {menus.map((data) => (
-            <Menu data={data} key={data._id} handleMenuClick={handleMenuClick} />
+            <Menu data={data} key={data._id} handleMenuClick={handleMenuClick} activeMenu={activeMenu} />
           ))}
         </div>
         <div className="movies relative w-full h-full bg-[#1e1e21] rounded-[20px] p-[10px]">

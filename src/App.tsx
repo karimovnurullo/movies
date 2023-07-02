@@ -15,6 +15,8 @@ export default class App extends Component<{}, AppState> {
     notFound: false,
     currentUser: null,
     adminPanel: false,
+    addSelect: null,
+    activeMenu: false,
   };
 
   componentDidMount(): void {
@@ -49,11 +51,12 @@ export default class App extends Component<{}, AppState> {
   handleRegister = () => {
     this.setState({ registerBtn: true });
   };
-  handleMenuClick = (id: string, name: string) => {
+  handleMenuClick = (id: string) => {
     const arr = [...this.state.movies];
     let filteredMovies: IMovie[] = arr.filter(
       (m: IMovie) => m.genre._id === id
     );
+    this.setState({ activeMenu: true });
     if (filteredMovies.length > 0) {
       this.setState({ filteredMovies, notFound: false });
     } else {
@@ -107,6 +110,7 @@ export default class App extends Component<{}, AppState> {
   };
   handleAddSelect = (value: string) => {
     console.log(`${value} selected`);
+    // this.setState({ addSelect: value });
   };
 
   render() {
@@ -119,6 +123,7 @@ export default class App extends Component<{}, AppState> {
       notFound,
       currentUser,
       adminPanel,
+      activeMenu,
     } = this.state;
     const {
       handleSearch,
@@ -157,9 +162,11 @@ export default class App extends Component<{}, AppState> {
       //     handleMenuClick={handleMenuClick}
       //     all={handleAllMenus}
       //     notFound={notFound}
+      //     activeMenu={activeMenu}
       //   />
       // </div>
-      <Panel select={handleAddSelect} />
+      <Panel />
+      // <Panel select={handleAddSelect} />
     );
   }
 }

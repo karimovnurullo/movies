@@ -29,8 +29,9 @@ export interface HomeProps {
   movies: IMovie[];
   notFound: boolean;
   search: (text: string) => void;
-  handleMenuClick: (id: string, name: string) => void;
+  handleMenuClick: (id: string) => void;
   all: () => void;
+  activeMenu: boolean;
 }
 export interface HomeState {
   currentPage: number;
@@ -43,7 +44,8 @@ export interface RegisterProps extends HomeBackProps {
 
 export interface MenuProps {
   data: IMenus;
-  handleMenuClick: (id: string, name: string) => void;
+  handleMenuClick: (id: string) => void;
+  activeMenu: boolean;
 }
 
 export interface MovieProps {
@@ -64,8 +66,10 @@ export interface AppState {
   notFound: boolean;
   currentUser: IUser | null;
   adminPanel: boolean;
+  addSelect: string | null;
+  activeMenu: boolean;
 }
 
-export interface PanelProps {
-  select: (value: string) => void;
-}
+// export interface PanelProps {
+//   select: (value: string) => void;
+// }
