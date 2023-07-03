@@ -1,7 +1,7 @@
-import React, { Component, FormEventHandler, createRef } from "react";
+import React, { Component, createRef } from "react";
 
 import { styles } from "./style";
-import { HomeProps, RegisterProps } from "./utils";
+import { RegisterProps } from "./utils";
 
 export default class Register extends Component<RegisterProps> {
   usernameRef = createRef<HTMLInputElement>()!;

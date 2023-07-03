@@ -116,8 +116,7 @@ export default class Panel extends Component<{}, PanelState> {
 
   render() {
     const inputStyle = "bg-[#151719] border-[1px] border-[#44444598] h-[40px] text-[18px] px-[10px] rounded-[10px] outline-none";
-    const { menuSelect, actionSelect, genres, genreSelect, movies, editGenreSelect, filteredMovies, editMovie, ediMovieGenreSelect } =
-      this.state;
+    const { menuSelect, actionSelect, genres, genreSelect, editGenreSelect, filteredMovies, editMovie, ediMovieGenreSelect } = this.state;
 
     const handleSubmit = (event: React.FormEvent) => {
       event.preventDefault();

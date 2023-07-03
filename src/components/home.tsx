@@ -1,7 +1,7 @@
 import React, { Component, createRef } from "react";
 import { styles } from "./style";
 import Menu from "./menu";
-import { HomeProps, HomeState, IMenus, IMovie } from "../components/utils";
+import { HomeProps, HomeState } from "../components/utils";
 import Movie from "./movie";
 
 export default class Home extends Component<HomeProps, HomeState> {

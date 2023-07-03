@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { styles } from "./style";
-import { IMenus, MenuProps } from "../components/utils";
+import { MenuProps } from "../components/utils";
 
 export default class Menu extends Component<MenuProps> {
   render() {

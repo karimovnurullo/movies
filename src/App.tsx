@@ -1,5 +1,4 @@
-import React, { Component, FormEvent, FormEventHandler } from "react";
-// import { Route, Redirect, Switch } from "react-router-dom";
+import React, { Component, FormEvent } from "react";
 
 import { Header, Home, Register, Login, Panel } from "./components";
 import axios from "axios";
@@ -122,7 +121,6 @@ export default class App extends Component<{}, AppState> {
       filteredMovies,
       notFound,
       currentUser,
-      adminPanel,
       activeMenu,
     } = this.state;
     const {
@@ -134,7 +132,6 @@ export default class App extends Component<{}, AppState> {
       handleLoginBack,
       hanleRegisterSubmit,
       handleAdminpanel,
-      handleAddSelect,
     } = this;
     if (loginBtn) {
       return <Login home={handleLoginBack} />;
@@ -165,8 +162,6 @@ export default class App extends Component<{}, AppState> {
           activeMenu={activeMenu}
         />
       </div>
-      // <Panel />
-      // <Panel select={handleAddSelect} />
     );
   }
 }
