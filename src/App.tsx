@@ -148,24 +148,24 @@ export default class App extends Component<{}, AppState> {
     }
 
     return (
-      // <div>
-      //   <Header
-      //     user={currentUser}
-      //     onLogin={this.handleLogin}
-      //     onRegister={handleRegister}
-      //     adminPanel={handleAdminpanel}
-      //   />
-      //   <Home
-      //     menus={menus}
-      //     search={handleSearch}
-      //     movies={filteredMovies.length > 0 ? filteredMovies : movies}
-      //     handleMenuClick={handleMenuClick}
-      //     all={handleAllMenus}
-      //     notFound={notFound}
-      //     activeMenu={activeMenu}
-      //   />
-      // </div>
-      <Panel />
+      <div>
+        <Header
+          user={currentUser}
+          onLogin={this.handleLogin}
+          onRegister={handleRegister}
+          adminPanel={handleAdminpanel}
+        />
+        <Home
+          menus={menus}
+          search={handleSearch}
+          movies={filteredMovies.length > 0 ? filteredMovies : movies}
+          handleMenuClick={handleMenuClick}
+          all={handleAllMenus}
+          notFound={notFound}
+          activeMenu={activeMenu}
+        />
+      </div>
+      // <Panel />
       // <Panel select={handleAddSelect} />
     );
   }
