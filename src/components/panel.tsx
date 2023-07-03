@@ -4,12 +4,33 @@ import axios from "axios";
 import { IMenus, IMovie, baseURL } from "./utils";
 // import { PanelProps } from "./utils";
 
-export default class Panel extends Component {
-  state = {
+interface PanelState {
+  menuSelect: null | string;
+  actionSelect: null | string;
+  genreSelect: null | string;
+  editGenreSelect: IMenus | null;
+  ediMovieGenreSelect: string;
+  filteredMovies: IMovie[];
+  editMovie: {
+    title: string;
+    genre: {
+      _id: string;
+      name: string;
+    };
+    stock: number;
+    rate: number;
+    selected: boolean;
+  };
+  genres: IMenus[];
+  movies: IMovie[];
+}
+export default class Panel extends Component<{}, PanelState> {
+  state: PanelState = {
     menuSelect: null,
     actionSelect: null,
     genreSelect: null,
     editGenreSelect: null,
+    ediMovieGenreSelect: "",
     filteredMovies: [],
     editMovie: {
       title: "",
@@ -17,8 +38,8 @@ export default class Panel extends Component {
         _id: "",
         name: "",
       },
-      stock: "",
-      rate: "",
+      stock: 0,
+      rate: 0,
       selected: false,
     },
     genres: [],
@@ -65,11 +86,11 @@ export default class Panel extends Component {
     const genre = [...this.state.genres].filter((g: IMenus) => g._id === id);
     const movies = [...this.state.movies].filter((m: IMovie) => m.genre._id === id);
 
-    this.setState({ editGenreSelect: genre, filteredMovies: movies });
-    console.log(genre, "Selected id");
+    this.setState({ editGenreSelect: genre[0], filteredMovies: movies });
+    console.log(genre, "Selected genre");
   };
   editMovieSelect = async (id: string) => {
-    const movie: IMovie = [...this.state.movies].filter((m: IMovie) => m._id === id)[0];
+    const movie: IMovie = this.state.movies.find((m: IMovie) => m._id === id)!;
 
     this.setState({
       editMovie: {
@@ -86,9 +107,17 @@ export default class Panel extends Component {
     console.log(movie, "Selected id");
   };
 
+  editMovieGenreSelect = async (id: string) => {
+    // const { data } = await axios.get(`${baseURL}/genres/${id}`);
+
+    this.setState({ ediMovieGenreSelect: id });
+    console.log(id, "Selected movie genre");
+  };
+
   render() {
     const inputStyle = "bg-[#151719] border-[1px] border-[#44444598] h-[40px] text-[18px] px-[10px] rounded-[10px] outline-none";
-    const { menuSelect, actionSelect, genres, genreSelect, movies, editGenreSelect, filteredMovies, editMovie } = this.state;
+    const { menuSelect, actionSelect, genres, genreSelect, movies, editGenreSelect, filteredMovies, editMovie, ediMovieGenreSelect } =
+      this.state;
 
     const handleSubmit = (event: React.FormEvent) => {
       event.preventDefault();
@@ -127,10 +156,10 @@ export default class Panel extends Component {
             console.log("Please fill in all the fields.");
           }
         } else if (actionSelect === "edit") {
-          if (title && stock && rate && genreSelect) {
+          if (title && stock && rate) {
             console.log("Movie Form Submitted", {
               title,
-              genreSelect,
+              genre: ediMovieGenreSelect ? ediMovieGenreSelect : editGenreSelect?._id,
               stock,
               rate,
             });
@@ -144,9 +173,10 @@ export default class Panel extends Component {
             if (!rate) {
               this.rateRef.current?.classList.add("error");
             }
-            if (!genreSelect) {
-              this.rateRef.current?.classList.add("error");
-            }
+            // if (!this.editMovieGenreSelect) {
+            //   // this.rateRef.current?.classList.add("error");
+            //   console.log("Please select movie genre");
+            // }
             console.log("Please fill in all the fields.");
           }
           // Handle edit action logic here
@@ -257,10 +287,11 @@ export default class Panel extends Component {
             </label>
             <input type="text" id="title" defaultValue={editMovie.title} ref={this.titleRef} className={`${inputStyle} mt-[-10px]`} />
             <select
-              onChange={(e) => this.editMovieSelect(e.target.value)}
+              onChange={(e) => this.editMovieGenreSelect(e.target.value)}
+              defaultValue={editGenreSelect?._id}
               className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
             >
-              <option value={editGenreSelect._id}></option>
+              <option>Genre</option>
               {genres.map(({ _id, name }) => (
                 <option value={_id} key={_id}>
                   {name}
