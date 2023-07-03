@@ -1,6 +1,6 @@
 import React, { Component, FormEvent } from "react";
 
-import { Header, Home, Register, Login } from "./components";
+import { Header, Home, Register, Login, Panel } from "./components";
 import axios from "axios";
 import { AppState, IMovie, baseURL } from "./components/utils";
 
@@ -146,7 +146,7 @@ export default class App extends Component<{}, AppState> {
 
     return (
       <div>
-        <Header
+        {/* <Header
           user={currentUser}
           onLogin={this.handleLogin}
           onRegister={handleRegister}
@@ -160,7 +160,8 @@ export default class App extends Component<{}, AppState> {
           all={handleAllMenus}
           notFound={notFound}
           activeMenu={activeMenu}
-        />
+        /> */}
+        <Panel />
       </div>
     );
   }
