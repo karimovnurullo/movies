@@ -132,7 +132,7 @@ export default class Panel extends Component<{}, PanelState> {
   };
 
   render() {
-    const inputStyle = "bg-[#151719] border-[1px] border-[#44444598] h-[40px] text-[18px] px-[10px] rounded-[10px] outline-none";
+    const inputStyle = "bg-[#151719] border-[1px] border-[#44444598] h-[40px] text-[18px] px-[10px] rounded-[10px] outline-none mt-[10px]";
     const {
       menuSelect,
       deleteMovieSelect,
@@ -212,11 +212,20 @@ export default class Panel extends Component<{}, PanelState> {
           }
         }
       } else if (menuSelect === "genre") {
-        if (deleteGenreSelect) {
-          console.log(deleteGenreSelect, "genre deleted");
-        } else {
-          console.log("Please select a genre.");
+        if (genreActionSelect === "add") {
+          const title = this.titleRef.current?.value;
+          if (!title) {
+            this.titleRef.current?.classList.add("error");
+            console.log("Please enter title.");
+          } else {
+            console.log("title", title);
+          }
         }
+        // if (deleteGenreSelect) {
+        //   console.log(deleteGenreSelect, "genre deleted");
+        // } else {
+        //   console.log("Please select a genre.");
+        // }
       }
     };
 
@@ -427,14 +436,16 @@ export default class Panel extends Component<{}, PanelState> {
             <option value="movie">Movie</option>
             <option value="genre">Genre</option>
           </select>
-          <form className="flex flex-col gap-[20px] mt-[10px]" onSubmit={handleSubmit}>
-            {renderSelect()}
-            {renderEditSelect()}
-            {renderMovieSelect()}
+          {renderSelect()}
+          {renderEditSelect()}
+          {renderMovieSelect()}
+        </div>
+        <div className="w-[400px] h-fit bg-[#1e1e21] rounded-[20px] p-[20px] flex flex-col">
+          <form className="flex flex-col" onSubmit={handleSubmit}>
+            <div className="bg-red-500"></div>
             {renderInputs()}
           </form>
         </div>
-        {/* <div className="w-[400px] h-[400px] bg-[#1e1e21] rounded-[20px] p-[20px] flex flex-col"></div> */}
       </div>
     );
   }
