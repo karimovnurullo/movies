@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { styles } from "./style";
-import { IMovie, MovieProps } from "../components/utils";
+import { MovieProps } from "../components/utils";
 
 export default class Movie extends Component<MovieProps> {
   render() {

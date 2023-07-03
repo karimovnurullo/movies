@@ -1,6 +1,6 @@
 import React, { Component, FormEvent } from "react";
 
-import { Header, Home, Register, Login, Panel } from "./components";
+import { Header, Home, Register, Login } from "./components";
 import axios from "axios";
 import { AppState, IMovie, baseURL } from "./components/utils";
 
