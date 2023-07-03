@@ -84,7 +84,7 @@ export default class Panel extends Component<{}, PanelState> {
     console.log(value, "Selected");
   };
   actionSelect = (value: string) => {
-    const isAdd = value === "add" ? false : true;
+    const isAdd = value === "add" ? false : value === "delete" ? false : true;
     this.setState({ actionSelect: value, control: isAdd });
     console.log(value, "Selected");
   };
@@ -122,7 +122,7 @@ export default class Panel extends Component<{}, PanelState> {
     this.setState({ deleteMovieSelect: movie._id });
   };
   editMovieGenreSelect = async (id: string) => {
-    this.setState({ deleteMovieSelect: id });
+    this.setState({ ediMovieGenreSelect: id });
     console.log(id, "Selected movie genre");
   };
   genreActionSelect = async (value: string) => {
@@ -155,6 +155,16 @@ export default class Panel extends Component<{}, PanelState> {
     const handleSubmit = (event: React.FormEvent) => {
       event.preventDefault();
       const { menuSelect, actionSelect } = this.state;
+      this.setState({
+        menuSelect: null,
+        actionSelect: null,
+        editGenreSelect: null,
+        genreSelect: null,
+        deleteMovieSelect: "",
+        ediMovieGenreSelect: "",
+        genreActionSelect: "",
+        deleteGenreSelect: "",
+      });
 
       if (menuSelect === "movie") {
         const title = this.titleRef.current?.value;
@@ -173,6 +183,7 @@ export default class Panel extends Component<{}, PanelState> {
               stock,
               rate,
             });
+            this.setState({ control: true });
           } else {
             if (!title) {
               this.titleRef.current?.classList.add("error");
@@ -196,6 +207,7 @@ export default class Panel extends Component<{}, PanelState> {
               stock,
               rate,
             });
+            this.setState({ control: true });
           } else {
             if (!title) {
               this.titleRef.current?.classList.add("error");
@@ -212,6 +224,7 @@ export default class Panel extends Component<{}, PanelState> {
         } else if (actionSelect === "delete") {
           if (deleteMovieSelect) {
             console.log(deleteMovieSelect, "movie deleted");
+            this.setState({ control: true });
           } else {
             console.log("Please fill in all the fields.");
           }
@@ -363,11 +376,11 @@ export default class Panel extends Component<{}, PanelState> {
       } else if (actionSelect === "delete") {
         return (
           <>
-            <label className="text-[22px]">Genre</label>
+            <label className="text-[22px] mt-[10px]">Genre</label>
             <select
               onChange={(e) => this.editGenreSelect(e.target.value)}
               defaultValue={editGenreSelect?._id}
-              className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
+              className="px-[10px] mt-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
             >
               <option>Genre</option>
               {genres.map(({ _id, name }) => (
@@ -376,12 +389,12 @@ export default class Panel extends Component<{}, PanelState> {
                 </option>
               ))}
             </select>
-            <label htmlFor="stock" className="text-[22px]">
+            <label htmlFor="stock" className="text-[22px] mt-[10px]">
               Movie
             </label>
             <select
               onChange={(e) => this.deleteMovieSelect(e.target.value)}
-              className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
+              className="px-[10px] mt-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
             >
               <option>Select Movie</option>
               {filteredMovies.map(({ _id, title }) => (
@@ -390,7 +403,7 @@ export default class Panel extends Component<{}, PanelState> {
                 </option>
               ))}
             </select>
-            <button type="submit" className="bg-[#0D0D12] h-[45px] rounded-[10px] mt-[10px] text-[25px]">
+            <button type="submit" className="bg-[#0D0D12]  h-[45px] rounded-[10px] mt-[20px] text-[25px]">
               Delete Movie
             </button>
           </>
@@ -435,9 +448,10 @@ export default class Panel extends Component<{}, PanelState> {
         <div className={`${control ? "flex" : "hidden"} w-[400px] h-fit bg-[#1e1e21] rounded-[20px] p-[20px] flex-col`}>
           <select
             onChange={(e) => this.menuSelect(e.target.value)}
+            value={menuSelect ? "select" : ""}
             className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
           >
-            <option>Select Add</option>
+            <option value="select">Select Add</option>
             <option value="movie">Movie</option>
             <option value="genre">Genre</option>
           </select>
