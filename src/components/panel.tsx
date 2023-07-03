@@ -13,6 +13,7 @@ interface PanelState {
   deleteMovieSelect: string;
   genreActionSelect: string;
   deleteGenreSelect: string;
+  control: boolean;
   filteredMovies: IMovie[];
   editMovie: {
     title: string;
@@ -37,6 +38,7 @@ export default class Panel extends Component<{}, PanelState> {
     ediMovieGenreSelect: "",
     genreActionSelect: "",
     deleteGenreSelect: "",
+    control: true,
     filteredMovies: [],
     editMovie: {
       title: "",
@@ -82,7 +84,8 @@ export default class Panel extends Component<{}, PanelState> {
     console.log(value, "Selected");
   };
   actionSelect = (value: string) => {
-    this.setState({ actionSelect: value });
+    const isAdd = value === "add" ? false : true;
+    this.setState({ actionSelect: value, control: isAdd });
     console.log(value, "Selected");
   };
   genreSelect = (value: string) => {
@@ -109,6 +112,7 @@ export default class Panel extends Component<{}, PanelState> {
         rate: movie.dailyRentalRate,
         selected: true,
       },
+      control: false,
     });
     console.log(movie, "Selected id");
   };
@@ -145,6 +149,7 @@ export default class Panel extends Component<{}, PanelState> {
       filteredMovies,
       editMovie,
       ediMovieGenreSelect,
+      control,
     } = this.state;
 
     const handleSubmit = (event: React.FormEvent) => {
@@ -260,7 +265,7 @@ export default class Panel extends Component<{}, PanelState> {
         return (
           <select
             onChange={(e) => this.editGenreSelect(e.target.value)}
-            className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
+            className="px-[10px] mt-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
           >
             <option>Select Genre</option>
             {genres.map(({ _id, name }) => (
@@ -277,7 +282,7 @@ export default class Panel extends Component<{}, PanelState> {
         return (
           <select
             onChange={(e) => this.editMovieSelect(e.target.value)}
-            className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
+            className="px-[10px] mt-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
           >
             <option>Select Movie</option>
             {filteredMovies.map(({ _id, title }) => (
@@ -427,7 +432,7 @@ export default class Panel extends Component<{}, PanelState> {
 
     return (
       <div className={`${styles.center} p-[30px]  flex justify-center gap-[50px] bg-[#0D0D12] h-[100vh] overflow-auto`}>
-        <div className="w-[400px] h-fit bg-[#1e1e21] rounded-[20px] p-[20px] flex flex-col">
+        <div className={`${control ? "flex" : "hidden"} w-[400px] h-fit bg-[#1e1e21] rounded-[20px] p-[20px] flex-col`}>
           <select
             onChange={(e) => this.menuSelect(e.target.value)}
             className="px-[10px] rounded-[10px] h-[40px] cursor-pointer outline-none bg-[#151719] border-[1px] border-[#44444598]"
@@ -440,9 +445,8 @@ export default class Panel extends Component<{}, PanelState> {
           {renderEditSelect()}
           {renderMovieSelect()}
         </div>
-        <div className="w-[400px] h-fit bg-[#1e1e21] rounded-[20px] p-[20px] flex flex-col">
+        <div className={`${!control ? "flex" : "hidden"} w-[400px] h-fit bg-[#1e1e21] rounded-[20px] p-[20px] flex-col`}>
           <form className="flex flex-col" onSubmit={handleSubmit}>
-            <div className="bg-red-500"></div>
             {renderInputs()}
           </form>
         </div>
