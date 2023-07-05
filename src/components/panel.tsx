@@ -4,6 +4,9 @@ import axios from "axios";
 import { IMenus, IMovie, baseURL } from "./utils";
 // import { PanelProps } from "./utils";
 
+const TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDc3ODZiZGUzODAyMjQ3MTFjZDhiZWIiLCJuYW1lIjoiTnVydWxsbyIsImVtYWlsIjoia2FyaW1vdmRldmVsb3BlckBnbWFpbC5jb20iLCJpYXQiOjE2ODg1ODk3Mzd9.4VWqYuIFL9M14Jowniwkk91h_ObeiPKjedz6Ksne5B0";
+
 interface PanelState {
   menuSelect: null | string;
   actionSelect: null | string;
@@ -154,7 +157,7 @@ export default class Panel extends Component<{}, PanelState> {
       control,
     } = this.state;
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
       const { menuSelect, actionSelect } = this.state;
 
@@ -169,12 +172,29 @@ export default class Panel extends Component<{}, PanelState> {
 
       if (menuSelect === "movie" && actionSelect === "add") {
         if (title && stock && rate && genreSelect) {
-          console.log("Movie Form Submitted", {
+          let movie = {
             title,
-            genreSelect,
-            stock,
-            rate,
-          });
+            genreId: genreSelect,
+            numberInStock: parseInt(stock),
+            dailyRentalRate: parseInt(rate),
+          };
+          const { data } = await axios.post(
+            `${baseURL}/movies`,
+            {
+              title,
+              genreId: genreSelect,
+              numberInStock: parseInt(stock),
+              dailyRentalRate: parseInt(rate),
+            },
+            {
+              headers: {
+                "x-auth-token": `${TOKEN}`,
+              },
+            }
+          );
+          console.log("Movie Form Submitted", movie);
+          console.log(data);
+
           this.setState({
             control: true,
             menuSelect: null,
