@@ -15,6 +15,7 @@ export interface IMovie {
   };
   numberInStock: number;
   dailyRentalRate: number;
+  username: string;
 }
 
 export interface HeaderProps {

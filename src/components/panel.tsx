@@ -24,7 +24,7 @@ interface PanelState {
     stock: number;
     rate: number;
     selected: boolean;
-  };
+  } | null;
   genres: IMenus[];
   movies: IMovie[];
 }
@@ -91,12 +91,13 @@ export default class Panel extends Component<{}, PanelState> {
   genreSelect = (value: string) => {
     this.setState({ genreSelect: value });
   };
-  editGenreSelect = async (id: string) => {
+  editGenreSelect = (id: string) => {
     const genre = [...this.state.genres].filter((g: IMenus) => g._id === id);
-    const movies = [...this.state.movies].filter((m: IMovie) => m.genre._id === id);
+    const movie = [...this.state.movies].filter((m: IMovie) => m.genre._id === id);
 
-    this.setState({ editGenreSelect: genre[0], filteredMovies: movies });
-    console.log(genre, "Selected genre");
+    this.setState({ editGenreSelect: genre[0], filteredMovies: movie });
+    // this.setState({ filteredMovies: movies });
+    console.log(genre[0].name, "Selected genre");
   };
   editMovieSelect = async (id: string) => {
     const movie: IMovie = this.state.movies.find((m: IMovie) => m._id === id)!;
@@ -155,16 +156,16 @@ export default class Panel extends Component<{}, PanelState> {
     const handleSubmit = (event: React.FormEvent) => {
       event.preventDefault();
       const { menuSelect, actionSelect } = this.state;
-      this.setState({
-        menuSelect: null,
-        actionSelect: null,
-        editGenreSelect: null,
-        genreSelect: null,
-        deleteMovieSelect: "",
-        ediMovieGenreSelect: "",
-        genreActionSelect: "",
-        deleteGenreSelect: "",
-      });
+      // this.setState({
+      //   menuSelect: null,
+      //   actionSelect: null,
+      //   editGenreSelect: null,
+      //   genreSelect: null,
+      //   deleteMovieSelect: "",
+      //   ediMovieGenreSelect: "",
+      //   genreActionSelect: "",
+      //   deleteGenreSelect: "",
+      // });
 
       if (menuSelect === "movie") {
         const title = this.titleRef.current?.value;
@@ -183,7 +184,11 @@ export default class Panel extends Component<{}, PanelState> {
               stock,
               rate,
             });
-            this.setState({ control: true });
+            this.setState({
+              control: true,
+              menuSelect: null,
+              actionSelect: null,
+            });
           } else {
             if (!title) {
               this.titleRef.current?.classList.add("error");
@@ -207,7 +212,22 @@ export default class Panel extends Component<{}, PanelState> {
               stock,
               rate,
             });
-            this.setState({ control: true });
+            this.setState({
+              control: true,
+              menuSelect: null,
+              actionSelect: null,
+              editGenreSelect: null,
+              editMovie: {
+                title: "",
+                genre: {
+                  _id: "",
+                  name: "",
+                },
+                stock: 0,
+                rate: 0,
+                selected: false,
+              },
+            });
           } else {
             if (!title) {
               this.titleRef.current?.classList.add("error");
@@ -224,7 +244,13 @@ export default class Panel extends Component<{}, PanelState> {
         } else if (actionSelect === "delete") {
           if (deleteMovieSelect) {
             console.log(deleteMovieSelect, "movie deleted");
-            this.setState({ control: true });
+            this.setState({
+              control: true,
+              deleteMovieSelect: "",
+              menuSelect: null,
+              editGenreSelect: null,
+              actionSelect: null,
+            });
           } else {
             console.log("Please fill in all the fields.");
           }
@@ -291,7 +317,7 @@ export default class Panel extends Component<{}, PanelState> {
       }
     };
     const renderMovieSelect = () => {
-      if (editGenreSelect != null) {
+      if (editGenreSelect) {
         return (
           <select
             onChange={(e) => this.editMovieSelect(e.target.value)}
@@ -340,13 +366,13 @@ export default class Panel extends Component<{}, PanelState> {
             </button>
           </>
         );
-      } else if (editMovie.selected) {
+      } else if (editMovie!.selected) {
         return (
           <>
             <label htmlFor="title" className="text-[22px]">
               Title
             </label>
-            <input type="text" id="title" defaultValue={editMovie.title} ref={this.titleRef} className={`${inputStyle} mt-[-10px]`} />
+            <input type="text" id="title" defaultValue={editMovie!.title} ref={this.titleRef} className={`${inputStyle} mt-[-10px]`} />
             <label className="text-[22px]">Genre</label>
             <select
               onChange={(e) => this.editMovieGenreSelect(e.target.value)}
@@ -363,11 +389,11 @@ export default class Panel extends Component<{}, PanelState> {
             <label htmlFor="stock" className="text-[22px]">
               Stock
             </label>
-            <input type="number" id="stock" defaultValue={editMovie.stock} ref={this.stockRef} className={`${inputStyle} mt-[-10px]`} />
+            <input type="number" id="stock" defaultValue={editMovie!.stock} ref={this.stockRef} className={`${inputStyle} mt-[-10px]`} />
             <label htmlFor="rate" className="text-[22px]">
               Rate
             </label>
-            <input type="number" id="rate" defaultValue={editMovie.rate} ref={this.rateRef} className={`${inputStyle} mt-[-10px]`} />
+            <input type="number" id="rate" defaultValue={editMovie!.rate} ref={this.rateRef} className={`${inputStyle} mt-[-10px]`} />
             <button type="submit" className="bg-[#0D0D12] h-[45px] rounded-[10px] mt-[10px] text-[25px]">
               Add Movie
             </button>
@@ -468,331 +494,3 @@ export default class Panel extends Component<{}, PanelState> {
     );
   }
 }
-
-// import React, { Component, createRef } from "react";
-// import { styles } from "./style";
-// import axios from "axios";
-// import { IMenus, IMovie, baseURL } from "./utils";
-
-// interface PanelState {
-//   menuSelect: null | string;
-//   actionSelect: null | string;
-//   genreSelect: null | string;
-//   editGenreSelect: IMenus | null;
-//   ediMovieGenreSelect: string;
-//   filteredMovies: IMovie[];
-//   editMovie: {
-//     title: string;
-//     genre: {
-//       _id: string;
-//       name: string;
-//     };
-//     stock: number;
-//     rate: number;
-//     selected: boolean;
-//   };
-//   genres: IMenus[];
-//   movies: IMovie[];
-// }
-
-// export default class Panel extends Component<{}, PanelState> {
-//   state: PanelState = {
-//     menuSelect: null,
-//     actionSelect: null,
-//     genreSelect: null,
-//     editGenreSelect: null,
-//     ediMovieGenreSelect: "",
-//     filteredMovies: [],
-//     editMovie: {
-//       title: "",
-//       genre: {
-//         _id: "",
-//         name: "",
-//       },
-//       stock: 0,
-//       rate: 0,
-//       selected: false,
-//     },
-//     genres: [],
-//     movies: [],
-//   };
-
-//   titleRef = createRef<HTMLInputElement>()!;
-//   rateRef = createRef<HTMLInputElement>()!;
-//   stockRef = createRef<HTMLInputElement>()!;
-//   genreRef = createRef<HTMLSelectElement>()!;
-
-//   getGenres = async () => {
-//     try {
-//       const { data } = await axios.get(`${baseURL}/genres`);
-//       this.setState({ genres: data });
-//     } catch (error) {
-//       console.log("Error fetching genres:", error);
-//     }
-//   };
-
-//   getMovies = async () => {
-//     try {
-//       const { data } = await axios.get(`${baseURL}/movies`);
-//       this.setState({ movies: data });
-//     } catch (error) {
-//       console.log("Error fetching movies:", error);
-//     }
-//   };
-
-//   componentDidMount(): void {
-//     this.getGenres();
-//     this.getMovies();
-//   }
-
-//   menuSelect = (value: string) => {
-//     this.setState({ menuSelect: value });
-//     console.log(value, "Selected");
-//   };
-
-//   actionSelect = (value: string) => {
-//     this.setState({ actionSelect: value });
-//     console.log(value, "Selected");
-//   };
-
-//   genreSelect = (value: string) => {
-//     this.setState({ genreSelect: value });
-//   };
-
-//   editGenreSelect = async (id: string) => {
-//     const genre = this.state.genres.find((g) => g._id === id);
-//     const movies = this.state.movies.filter((m) => m.genre._id === id);
-
-//     // this.setState({ editGenreSelect: genre, filteredMovies: movies });
-//     this.setState({ editGenreSelect: genre || null, filteredMovies: movies });
-
-//     console.log(genre, "Selected genre");
-//   };
-
-//   editMovieSelect = async (id: string) => {
-//     const movie = this.state.movies.find((m) => m._id === id);
-
-//     if (movie) {
-//       this.setState({
-//         editMovie: {
-//           title: movie.title,
-//           genre: {
-//             _id: movie.genre._id,
-//             name: movie.genre.name,
-//           },
-//           stock: movie.numberInStock,
-//           rate: movie.dailyRentalRate,
-//           selected: true,
-//         },
-//       });
-//       console.log(movie, "Selected id");
-//     }
-//   };
-
-//   editMovieGenreSelect = async (id: string) => {
-//     this.setState({ ediMovieGenreSelect: id });
-//     console.log(id, "Selected movie genre");
-//   };
-
-//   handleSubmit = (event: React.FormEvent) => {
-//     event.preventDefault();
-//     const { menuSelect, actionSelect, genreSelect, editMovie, filteredMovies, ediMovieGenreSelect } = this.state;
-
-//     const movie = {
-//       title: this.titleRef.current!.value,
-//       genre: {
-//         _id: this.genreRef.current!.value,
-//         name: this.genreRef.current!.options[this.genreRef.current!.selectedIndex].text,
-//       },
-//       stock: parseInt(this.stockRef.current!.value),
-//       rate: parseInt(this.rateRef.current!.value),
-//     };
-
-//     if (menuSelect === "movies") {
-//       if (actionSelect === "add") {
-//         axios
-//           .post(`${baseURL}/movies`, movie)
-//           .then(() => {
-//             this.getMovies();
-//           })
-//           .catch((error) => {
-//             console.log("Error adding movie:", error);
-//           });
-//       } else if (actionSelect === "edit") {
-//         axios
-//           .put(`${baseURL}/movies/${editMovie.title}`, movie)
-//           .then(() => {
-//             this.getMovies();
-//           })
-//           .catch((error) => {
-//             console.log("Error editing movie:", error);
-//           });
-//       } else if (actionSelect === "delete") {
-//         const movieIds = filteredMovies.map((m) => m._id);
-//         axios
-//           .delete(`${baseURL}/movies`, { data: { movieIds } })
-//           .then(() => {
-//             this.getMovies();
-//           })
-//           .catch((error) => {
-//             console.log("Error deleting movies:", error);
-//           });
-//       }
-//     } else if (menuSelect === "genres") {
-//       if (actionSelect === "add") {
-//         axios
-//           .post(`${baseURL}/genres`, { name: genreSelect })
-//           .then(() => {
-//             this.getGenres();
-//           })
-//           .catch((error) => {
-//             console.log("Error adding genre:", error);
-//           });
-//       } else if (actionSelect === "edit") {
-//         axios
-//           .put(`${baseURL}/genres/${editMovie.genre._id}`, { name: genreSelect })
-//           .then(() => {
-//             this.getGenres();
-//             this.getMovies();
-//           })
-//           .catch((error) => {
-//             console.log("Error editing genre:", error);
-//           });
-//       } else if (actionSelect === "delete") {
-//         axios
-//           .delete(`${baseURL}/genres/${editMovie.genre._id}`)
-//           .then(() => {
-//             this.getGenres();
-//             this.getMovies();
-//           })
-//           .catch((error) => {
-//             console.log("Error deleting genre:", error);
-//           });
-//       }
-//     }
-
-//     this.titleRef.current!.value = "";
-//     this.stockRef.current!.value = "0";
-//     this.rateRef.current!.value = "0";
-//     this.genreRef.current!.value = "";
-//     this.setState({
-//       menuSelect: null,
-//       actionSelect: null,
-//       genreSelect: null,
-//       editGenreSelect: null,
-//       ediMovieGenreSelect: "",
-//       editMovie: {
-//         title: "",
-//         genre: {
-//           _id: "",
-//           name: "",
-//         },
-//         stock: 0,
-//         rate: 0,
-//         selected: false,
-//       },
-//       filteredMovies: [],
-//     });
-//   };
-
-//   render() {
-//     const { menuSelect, actionSelect, genreSelect, editGenreSelect, editMovie, genres, movies, filteredMovies, ediMovieGenreSelect } =
-//       this.state;
-
-//     return (
-//       <div>
-//         <h2>Add/Edit/Delete Movies and Genres</h2>
-//         <form onSubmit={this.handleSubmit}>
-//           <div style={styles.formGroup}>
-//             <label>Select Menu:</label>
-//             <select onChange={(e) => this.menuSelect(e.target.value)} value={menuSelect || ""}>
-//               <option value="">-- Select Menu --</option>
-//               <option value="movies">Movies</option>
-//               <option value="genres">Genres</option>
-//             </select>
-//           </div>
-//           <div style={styles.formGroup}>
-//             <label>Select Action:</label>
-//             <select onChange={(e) => this.actionSelect(e.target.value)} value={actionSelect || ""}>
-//               <option value="">-- Select Action --</option>
-//               <option value="add">Add</option>
-//               <option value="edit">Edit</option>
-//               <option value="delete">Delete</option>
-//             </select>
-//           </div>
-//           {menuSelect === "genres" && actionSelect === "edit" && (
-//             <div style={styles.formGroup}>
-//               <label>Select Genre:</label>
-//               <select onChange={(e) => this.genreSelect(e.target.value)} value={genreSelect || ""}>
-//                 <option value="">-- Select Genre --</option>
-//                 {genres.map((genre) => (
-//                   <option key={genre._id} value={genre.name}>
-//                     {genre.name}
-//                   </option>
-//                 ))}
-//               </select>
-//             </div>
-//           )}
-//           {menuSelect === "movies" && (actionSelect === "edit" || actionSelect === "delete") && (
-//             <div style={styles.formGroup}>
-//               <label>Select Genre:</label>
-//               <select onChange={(e) => this.editGenreSelect(e.target.value)} value={editGenreSelect ? editGenreSelect._id : ""}>
-//                 <option value="">-- Select Genre --</option>
-//                 {genres.map((genre) => (
-//                   <option key={genre._id} value={genre._id}>
-//                     {genre.name}
-//                   </option>
-//                 ))}
-//               </select>
-//             </div>
-//           )}
-//           {menuSelect === "movies" && actionSelect === "edit" && (
-//             <div style={styles.formGroup}>
-//               <label>Select Movie:</label>
-//               <select onChange={(e) => this.editMovieSelect(e.target.value)}>
-//                 <option value="">-- Select Movie --</option>
-//                 {filteredMovies.map((movie) => (
-//                   <option key={movie._id} value={movie._id}>
-//                     {movie.title}
-//                   </option>
-//                 ))}
-//               </select>
-//             </div>
-//           )}
-//           {menuSelect === "movies" && (actionSelect === "add" || actionSelect === "edit") && (
-//             <div style={styles.formGroup}>
-//               <label>Title:</label>
-//               <input type="text" ref={this.titleRef} defaultValue={editMovie.title} />
-//             </div>
-//           )}
-//           {menuSelect === "movies" && (actionSelect === "add" || actionSelect === "edit") && (
-//             <div style={styles.formGroup}>
-//               <label>Rate:</label>
-//               <input type="number" ref={this.rateRef} defaultValue={editMovie.rate.toString()} />
-//             </div>
-//           )}
-//           {menuSelect === "movies" && (actionSelect === "add" || actionSelect === "edit") && (
-//             <div style={styles.formGroup}>
-//               <label>Stock:</label>
-//               <input type="number" ref={this.stockRef} defaultValue={editMovie.stock.toString()} />
-//             </div>
-//           )}
-//           {menuSelect === "movies" && (actionSelect === "add" || actionSelect === "edit") && (
-//             <div style={styles.formGroup}>
-//               <label>Genre:</label>
-//               <select onChange={(e) => this.editMovieGenreSelect(e.target.value)} value={ediMovieGenreSelect || ""}>
-//                 <option value="">-- Select Genre --</option>
-//                 {genres.map((genre) => (
-//                   <option key={genre._id} value={genre._id}>
-//                     {genre.name}
-//                   </option>
-//                 ))}
-//               </select>
-//             </div>
-//           )}
-//           <button type="submit">Submit</button>
-//         </form>
-//       </div>
-//     );
-//   }
-// }
