@@ -127,7 +127,8 @@ export default class Panel extends Component<{}, PanelState> {
     console.log(id, "Selected movie genre");
   };
   genreActionSelect = async (value: string) => {
-    this.setState({ genreActionSelect: value });
+    const isAdd = value === "add" ? false : value === "delete" ? false : true;
+    this.setState({ genreActionSelect: value, control: isAdd });
     console.log(value, "Selected genre action");
   };
   deleteGenreSelect = async (id: string) => {
@@ -156,120 +157,110 @@ export default class Panel extends Component<{}, PanelState> {
     const handleSubmit = (event: React.FormEvent) => {
       event.preventDefault();
       const { menuSelect, actionSelect } = this.state;
-      // this.setState({
-      //   menuSelect: null,
-      //   actionSelect: null,
-      //   editGenreSelect: null,
-      //   genreSelect: null,
-      //   deleteMovieSelect: "",
-      //   ediMovieGenreSelect: "",
-      //   genreActionSelect: "",
-      //   deleteGenreSelect: "",
-      // });
 
-      if (menuSelect === "movie") {
-        const title = this.titleRef.current?.value;
-        const stock = this.stockRef.current?.value;
-        const rate = this.rateRef.current?.value;
+      // if (menuSelect === "movie") {
+      const title = this.titleRef.current?.value;
+      const stock = this.stockRef.current?.value;
+      const rate = this.rateRef.current?.value;
 
-        this.titleRef.current?.classList.remove("error");
-        this.stockRef.current?.classList.remove("error");
-        this.rateRef.current?.classList.remove("error");
+      this.titleRef.current?.classList.remove("error");
+      this.stockRef.current?.classList.remove("error");
+      this.rateRef.current?.classList.remove("error");
 
-        if (actionSelect === "add") {
-          if (title && stock && rate && genreSelect) {
-            console.log("Movie Form Submitted", {
-              title,
-              genreSelect,
-              stock,
-              rate,
-            });
-            this.setState({
-              control: true,
-              menuSelect: null,
-              actionSelect: null,
-            });
-          } else {
-            if (!title) {
-              this.titleRef.current?.classList.add("error");
-            }
-            if (!stock) {
-              this.stockRef.current?.classList.add("error");
-            }
-            if (!rate) {
-              this.rateRef.current?.classList.add("error");
-            }
-            if (!genreSelect) {
-              this.rateRef.current?.classList.add("error");
-            }
-            console.log("Please fill in all the fields.");
-          }
-        } else if (actionSelect === "edit") {
-          if (title && stock && rate) {
-            console.log("Movie Edit Form Submitted", {
-              title,
-              genre: ediMovieGenreSelect ? ediMovieGenreSelect : editGenreSelect?._id,
-              stock,
-              rate,
-            });
-            this.setState({
-              control: true,
-              menuSelect: null,
-              actionSelect: null,
-              editGenreSelect: null,
-              editMovie: {
-                title: "",
-                genre: {
-                  _id: "",
-                  name: "",
-                },
-                stock: 0,
-                rate: 0,
-                selected: false,
-              },
-            });
-          } else {
-            if (!title) {
-              this.titleRef.current?.classList.add("error");
-            }
-            if (!stock) {
-              this.stockRef.current?.classList.add("error");
-            }
-            if (!rate) {
-              this.rateRef.current?.classList.add("error");
-            }
-            console.log("Please fill in all the fields.");
-          }
-          // Handle edit action logic here
-        } else if (actionSelect === "delete") {
-          if (deleteMovieSelect) {
-            console.log(deleteMovieSelect, "movie deleted");
-            this.setState({
-              control: true,
-              deleteMovieSelect: "",
-              menuSelect: null,
-              editGenreSelect: null,
-              actionSelect: null,
-            });
-          } else {
-            console.log("Please fill in all the fields.");
-          }
-        }
-      } else if (menuSelect === "genre") {
-        if (genreActionSelect === "add") {
-          const title = this.titleRef.current?.value;
+      if (menuSelect === "movie" && actionSelect === "add") {
+        if (title && stock && rate && genreSelect) {
+          console.log("Movie Form Submitted", {
+            title,
+            genreSelect,
+            stock,
+            rate,
+          });
+          this.setState({
+            control: true,
+            menuSelect: null,
+            actionSelect: null,
+          });
+        } else {
           if (!title) {
             this.titleRef.current?.classList.add("error");
-            console.log("Please enter title.");
-          } else {
-            console.log("title", title);
           }
+          if (!stock) {
+            this.stockRef.current?.classList.add("error");
+          }
+          if (!rate) {
+            this.rateRef.current?.classList.add("error");
+          }
+          console.log("Please fill in all the fields.");
         }
-        // if (deleteGenreSelect) {
-        //   console.log(deleteGenreSelect, "genre deleted");
-        // } else {
-        //   console.log("Please select a genre.");
-        // }
+      } else if (menuSelect === "movie" && actionSelect === "edit") {
+        if (title && stock && rate) {
+          console.log("Movie Edit Form Submitted", {
+            title,
+            genre: ediMovieGenreSelect ? ediMovieGenreSelect : editGenreSelect?._id,
+            stock,
+            rate,
+          });
+          this.setState({
+            control: true,
+            menuSelect: null,
+            actionSelect: null,
+            editGenreSelect: null,
+            filteredMovies: [],
+            editMovie: {
+              title: "",
+              genre: {
+                _id: "",
+                name: "",
+              },
+              stock: 0,
+              rate: 0,
+              selected: false,
+            },
+          });
+        } else {
+          if (!title) {
+            this.titleRef.current?.classList.add("error");
+          }
+          if (!stock) {
+            this.stockRef.current?.classList.add("error");
+          }
+          if (!rate) {
+            this.rateRef.current?.classList.add("error");
+          }
+          console.log("Please fill in all the fields.");
+        }
+        // Handle edit action logic here
+      } else if (menuSelect === "movie" && actionSelect === "delete") {
+        if (deleteMovieSelect) {
+          console.log(deleteMovieSelect, "movie deleted");
+          this.setState({
+            control: true,
+            deleteMovieSelect: "",
+            menuSelect: null,
+            editGenreSelect: null,
+            actionSelect: null,
+          });
+        } else {
+          console.log("Please fill in all the fields.");
+        }
+      }
+      // }
+      if (genreActionSelect === "add") {
+        const title = this.titleRef.current?.value;
+        if (title) {
+          console.log(title, "genre added");
+          this.setState({ control: true, actionSelect: null, genreActionSelect: "", menuSelect: "" });
+        } else {
+          this.titleRef.current?.classList.add("error");
+          console.log("Please enter title.");
+        }
+      } else if (genreActionSelect === "delete") {
+        if (deleteGenreSelect) {
+          console.log(deleteGenreSelect, "genre deleted");
+          this.setState({ control: true, actionSelect: null, genreActionSelect: "", menuSelect: "" });
+        } else {
+          console.log("Please select genre.");
+        }
       }
     };
 
