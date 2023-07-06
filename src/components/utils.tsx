@@ -5,6 +5,7 @@ export interface IMenus {
 }
 export interface HomeBackProps {
   home: () => void;
+  onNavigate: (pathname: string) => void;
 }
 export interface IMovie {
   _id: string;
@@ -23,6 +24,7 @@ export interface HeaderProps {
   onLogin: () => void;
   user: IUser | null;
   adminPanel: () => void;
+  onNavigate: (pathname: string) => void;
 }
 
 export interface HomeProps {
@@ -41,6 +43,7 @@ export interface HomeState {
 
 export interface RegisterProps extends HomeBackProps {
   onRegisterSubmit: (e: React.FormEvent<HTMLFormElement>, username: string, password: string, name: string) => void;
+  onNavigate: (pathname: string) => void;
 }
 
 export interface MenuProps {
@@ -69,6 +72,7 @@ export interface AppState {
   adminPanel: boolean;
   addSelect: string | null;
   activeMenu: boolean;
+  pathname: string;
 }
 
 // export interface PanelProps {

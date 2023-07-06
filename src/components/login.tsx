@@ -7,12 +7,17 @@ export default class Login extends Component<HomeBackProps> {
     e.preventDefault();
     console.log("Submit Login");
   };
+  handleNavigate = (pathname: string) => {
+    window.history.pushState({}, "", pathname);
+    this.props.onNavigate(pathname);
+    this.props.home();
+  };
   render() {
     const inputStyle = "bg-[#151719] border-[1px] border-[#44444598] h-[40px] text-[20px] px-[10px] rounded-[10px] outline-none";
     return (
       <div className={`${styles.center} login w-full h-[100vh] bg-[#0D0D12] font-concord`}>
         <div
-          onClick={this.props.home}
+          onClick={() => this.handleNavigate("/")}
           className="home absolute left-[30px] top-[30px] flex gap-[10px] items-center text-[24px] cursor-pointer"
         >
           <i className="fa-regular fa-circle-left"></i>

@@ -16,6 +16,7 @@ export default class App extends Component<{}, AppState> {
     adminPanel: false,
     addSelect: null,
     activeMenu: false,
+    pathname: window.location.pathname,
   };
 
   componentDidMount(): void {
@@ -111,8 +112,10 @@ export default class App extends Component<{}, AppState> {
     console.log(`${value} selected`);
     // this.setState({ addSelect: value });
   };
-
-  render() {
+  handleNavigate = (pathname: string) => {
+    this.setState({ pathname });
+  };
+  getPage = () => {
     const {
       movies,
       menus,
@@ -132,37 +135,59 @@ export default class App extends Component<{}, AppState> {
       handleLoginBack,
       hanleRegisterSubmit,
       handleAdminpanel,
+      handleLogin,
+      handleNavigate,
     } = this;
-    if (loginBtn) {
-      return <Login home={handleLoginBack} />;
-    } else if (registerBtn) {
-      return (
-        <Register
-          home={handleRegisterBack}
-          onRegisterSubmit={hanleRegisterSubmit}
-        />
-      );
+    switch (this.state.pathname) {
+      case "/register":
+        return (
+          <Register
+            onNavigate={handleNavigate}
+            home={handleRegisterBack}
+            onRegisterSubmit={hanleRegisterSubmit}
+          />
+        );
+      case "/login":
+        return <Login home={handleLoginBack} onNavigate={handleNavigate} />;
+      case "/panel":
+        return <Panel />;
+      default:
+        return (
+          <>
+            <Header
+              user={currentUser}
+              onLogin={handleLogin}
+              onRegister={handleRegister}
+              adminPanel={handleAdminpanel}
+              onNavigate={handleNavigate}
+            />
+            <Home
+              menus={menus}
+              search={handleSearch}
+              movies={filteredMovies.length > 0 ? filteredMovies : movies}
+              handleMenuClick={handleMenuClick}
+              all={handleAllMenus}
+              notFound={notFound}
+              activeMenu={activeMenu}
+            />
+          </>
+        );
+        break;
     }
+  };
 
-    return (
-      <div>
-        {/* <Header
-          user={currentUser}
-          onLogin={this.handleLogin}
-          onRegister={handleRegister}
-          adminPanel={handleAdminpanel}
-        />
-        <Home
-          menus={menus}
-          search={handleSearch}
-          movies={filteredMovies.length > 0 ? filteredMovies : movies}
-          handleMenuClick={handleMenuClick}
-          all={handleAllMenus}
-          notFound={notFound}
-          activeMenu={activeMenu}
-        /> */}
-        <Panel />
-      </div>
-    );
+  render() {
+    // if (loginBtn) {
+    //   return <Login home={handleLoginBack} />;
+    // } else if (registerBtn) {
+    //   return (
+    //     <Register
+    //       home={handleRegisterBack}
+    //       onRegisterSubmit={hanleRegisterSubmit}
+    //     />
+    //   );
+    // }
+
+    return <div>{this.getPage()}</div>;
   }
 }

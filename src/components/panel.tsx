@@ -5,7 +5,7 @@ import { IMenus, IMovie, baseURL } from "./utils";
 // import { PanelProps } from "./utils";
 
 const TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDc3ODZiZGUzODAyMjQ3MTFjZDhiZWIiLCJuYW1lIjoiTnVydWxsbyIsImVtYWlsIjoia2FyaW1vdmRldmVsb3BlckBnbWFpbC5jb20iLCJpYXQiOjE2ODg1ODk3Mzd9.4VWqYuIFL9M14Jowniwkk91h_ObeiPKjedz6Ksne5B0";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDc3ODZiZGUzODAyMjQ3MTFjZDhiZWIiLCJuYW1lIjoiTnVydWxsbyIsImVtYWlsIjoia2FyaW1vdmRldmVsb3BlckBnbWFpbC5jb20iLCJpYXQiOjE2ODg2MjUxNzJ9.ERrAWSo1Jl4vLZftbAsoD46bdc6qW54_PNjHDoTSDUQ";
 
 interface PanelState {
   menuSelect: null | string;
@@ -178,22 +178,13 @@ export default class Panel extends Component<{}, PanelState> {
             numberInStock: parseInt(stock),
             dailyRentalRate: parseInt(rate),
           };
-          const { data } = await axios.post(
-            `${baseURL}/movies`,
-            {
-              title,
-              genreId: genreSelect,
-              numberInStock: parseInt(stock),
-              dailyRentalRate: parseInt(rate),
+          const res = await axios.post(`${baseURL}/movies`, movie, {
+            headers: {
+              "x-auth-token": `${TOKEN}`,
             },
-            {
-              headers: {
-                "x-auth-token": `${TOKEN}`,
-              },
-            }
-          );
+          });
           console.log("Movie Form Submitted", movie);
-          console.log(data);
+          console.log(res);
 
           this.setState({
             control: true,
