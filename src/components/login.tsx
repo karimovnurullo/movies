@@ -5,6 +5,7 @@ import { HomeBackProps } from "./utils";
 export default class Login extends Component<HomeBackProps> {
   handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
+
     console.log("Submit Login");
   };
   handleNavigate = (pathname: string) => {

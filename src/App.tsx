@@ -16,6 +16,7 @@ export default class App extends Component<{}, AppState> {
     adminPanel: false,
     addSelect: null,
     activeMenu: false,
+    // pathname: "/panel",
     pathname: window.location.pathname,
   };
 

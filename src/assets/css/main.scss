@@ -141,4 +141,40 @@
 		border: 1px solid rgb(185 28 28 / 1);
 	}
 
+	.select {
+		padding: 0 10px;
+		border-radius: 10px;
+		margin-top: 10px;
+		height: 40px;
+		cursor: pointer;
+		outline: none;
+		background: #151719;
+		border: 1px solid #44444598;
+	}
+
+	.label {
+		font-size: 22px;
+		margin-top: 10px;
+	}
+
+	.submit-btn {
+		background: #0D0D12;
+		border-radius: 10px;
+		margin-top: 10px;
+		font-size: 25px;
+		height: 50px;
+		margin-top: 20px;
+	}
+
+	.input {
+		background: #151719;
+		border: 1px solid #44444598;
+		height: 40px;
+		font-size: 18px;
+		padding: 0 10px;
+		border-radius: 10px;
+		outline: none;
+		margin-top: 10px;
+	}
+
 }

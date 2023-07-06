@@ -8,7 +8,7 @@ export default class Home extends Component<HomeProps, HomeState> {
   inputRef = createRef<HTMLInputElement>();
   state = {
     currentPage: 1,
-    moviesPerPage: 5,
+    moviesPerPage: 4,
   };
   handlePageChange = (pageNumber: number) => {
     this.setState({ currentPage: pageNumber });
@@ -24,6 +24,8 @@ export default class Home extends Component<HomeProps, HomeState> {
 
     const moviesCounter = movies.length;
     const totalPages = Math.ceil(movies.length / moviesPerPage);
+    const shouldShowPagination = totalPages > 1;
+
     return (
       <div className="p-[30px]  flex justify-between gap-[30px] bg-[#0D0D12] h-[calc(100vh-70px)]">
         <div className="memus overflow-auto w-1/3 h-full bg-[#1e1e21] rounded-[20px] p-[20px] flex flex-col text-center gap-[10px]">
@@ -74,7 +76,7 @@ export default class Home extends Component<HomeProps, HomeState> {
               currentMovies.map((data) => <Movie data={data} key={data._id} />)
             )}
           </div>
-          {!notFound && (
+          {shouldShowPagination && (
             <div className="pagination flex gap-2 absolute bottom-[10px] left-[10px]">
               {Array.from({ length: totalPages }, (_, index) => (
                 <button
