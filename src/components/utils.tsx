@@ -4,7 +4,6 @@ export interface IMenus {
   _id: string;
 }
 export interface HomeBackProps {
-  home: () => void;
   onNavigate: (pathname: string) => void;
 }
 export interface IMovie {
@@ -41,8 +40,7 @@ export interface HomeState {
   moviesPerPage: number;
 }
 
-export interface RegisterProps extends HomeBackProps {
-  onRegisterSubmit: (e: React.FormEvent<HTMLFormElement>, username: string, password: string, name: string) => void;
+export interface RegisterProps {
   onNavigate: (pathname: string) => void;
 }
 

@@ -79,32 +79,6 @@ export default class App extends Component<{}, AppState> {
     const arr = [...this.state.movies];
     this.setState({ filteredMovies: arr, notFound: false });
   };
-  hanleRegisterSubmit = async (
-    e: FormEvent<HTMLFormElement>,
-    username: string,
-    password: string,
-    name: string
-  ) => {
-    e.preventDefault();
-    if (
-      username.trim().length !== 0 ||
-      password.trim().length !== 0 ||
-      name.trim().length !== 0
-    ) {
-      this.setState({ registerBtn: false });
-      console.log(username);
-      console.log(password);
-      console.log(name);
-
-      const { data } = await axios.post(`${baseURL}/users`, {
-        name,
-        email: username,
-        password,
-      });
-      console.log(data);
-      this.setState({ currentUser: data });
-    }
-  };
 
   handleAdminpanel = () => {
     console.log("Admin panel called");
@@ -132,24 +106,16 @@ export default class App extends Component<{}, AppState> {
       handleMenuClick,
       handleAllMenus,
       handleRegister,
-      handleRegisterBack,
       handleLoginBack,
-      hanleRegisterSubmit,
       handleAdminpanel,
       handleLogin,
       handleNavigate,
     } = this;
     switch (this.state.pathname) {
       case "/register":
-        return (
-          <Register
-            onNavigate={handleNavigate}
-            home={handleRegisterBack}
-            onRegisterSubmit={hanleRegisterSubmit}
-          />
-        );
+        return <Register onNavigate={handleNavigate} />;
       case "/login":
-        return <Login home={handleLoginBack} onNavigate={handleNavigate} />;
+        return <Login onNavigate={handleNavigate} />;
       case "/panel":
         return <Panel />;
       default:

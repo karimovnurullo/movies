@@ -1,7 +1,8 @@
-import React, { Component, createRef } from "react";
+import React, { Component, FormEventHandler, createRef } from "react";
 
 import { styles } from "./style";
-import { RegisterProps } from "./utils";
+import { RegisterProps, baseURL } from "./utils";
+import axios from "axios";
 
 export default class Register extends Component<RegisterProps> {
   usernameRef = createRef<HTMLInputElement>()!;
@@ -10,7 +11,26 @@ export default class Register extends Component<RegisterProps> {
   handleNavigate = (pathname: string) => {
     window.history.pushState({}, "", pathname);
     this.props.onNavigate(pathname);
-    this.props.home();
+  };
+  handleSubmit: FormEventHandler = async (e) => {
+    e.preventDefault();
+    const username = this.usernameRef.current!.value;
+    const password = this.passwordRef.current!.value;
+    const name = this.nameRef.current!.value;
+
+    if (username.trim().length !== 0 || password.trim().length !== 0 || name.trim().length !== 0) {
+      console.log(username);
+      console.log(password);
+      console.log(name);
+
+      const { data } = await axios.post(`${baseURL}/users`, {
+        name,
+        email: username,
+        password,
+      });
+      console.log(data);
+      this.setState({ currentUser: data });
+    }
   };
 
   render() {
@@ -24,12 +44,7 @@ export default class Register extends Component<RegisterProps> {
           <i className="fa-regular fa-circle-left"></i>
           <>Home</>
         </div>
-        <form
-          onSubmit={(e) =>
-            this.props.onRegisterSubmit(e, this.usernameRef.current!.value, this.passwordRef.current!.value, this.nameRef.current!.value)
-          }
-          className="w-[600px] h-fit bg-[#1e1e21] rounded-[20px] p-[20px] flex flex-col gap-[20px]"
-        >
+        <form onSubmit={this.handleSubmit} className="w-[600px] h-fit bg-[#1e1e21] rounded-[20px] p-[20px] flex flex-col gap-[20px]">
           <label htmlFor="email" className="text-[22px]">
             Username
           </label>
