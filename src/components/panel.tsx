@@ -165,6 +165,8 @@ export default class Panel extends Component<{}, PanelState> {
     const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
       const { menuSelect, actionSelect } = this.state;
+      this.getGenres();
+      this.getMovies();
 
       // if (menuSelect === "movie") {
       const title = this.titleRef.current?.value;
