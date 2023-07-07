@@ -5,13 +5,11 @@ import { HomeBackProps } from "./utils";
 export default class Login extends Component<HomeBackProps> {
   handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
-
     console.log("Submit Login");
   };
   handleNavigate = (pathname: string) => {
     window.history.pushState({}, "", pathname);
     this.props.onNavigate(pathname);
-    this.props.home();
   };
   render() {
     const inputStyle = "bg-[#151719] border-[1px] border-[#44444598] h-[40px] text-[20px] px-[10px] rounded-[10px] outline-none";

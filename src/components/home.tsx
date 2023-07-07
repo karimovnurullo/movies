@@ -52,7 +52,7 @@ export default class Home extends Component<HomeProps, HomeState> {
                     search(this.inputRef.current.value);
                   }
                 }}
-                className="rounded-[20px] w-[350px] h-[40px] px-[15px] outline-none bg-[#151719] border-[1px] border-[#44444598] placeholder:text-[18px]"
+                className="rounded-[20px] w-[350px] h-[45px] px-[15px] outline-none bg-[#151719] border-[1px] border-[#44444598] placeholder:text-[18px]"
                 placeholder="Movie search..."
               />
 
@@ -76,6 +76,28 @@ export default class Home extends Component<HomeProps, HomeState> {
               currentMovies.map((data) => <Movie data={data} key={data._id} />)
             )}
           </div>
+          {/* <table className="w-full">
+            <thead>
+              <tr
+                className={`movie text-center w-full left-[20px] top-0  h-[50px] rounded-[10px] ${styles.center} justify-between px-[10px] pl-[10px] text-[22px]`}
+              >
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Username</th>
+                <th>Stock</th>
+                <th>Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {notFound ? (
+                <div className="text-center text-[35px]  absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] font-associate">
+                  No movies found.
+                </div>
+              ) : (
+                currentMovies.map((data) => <Movie data={data} key={data._id} />)
+              )}
+            </tbody>
+          </table> */}
           {shouldShowPagination && (
             <div className="pagination flex gap-2 absolute bottom-[10px] left-[10px]">
               {Array.from({ length: totalPages }, (_, index) => (

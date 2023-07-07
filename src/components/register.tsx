@@ -14,11 +14,11 @@ export default class Register extends Component<RegisterProps> {
   };
   handleSubmit: FormEventHandler = async (e) => {
     e.preventDefault();
-    const username = this.usernameRef.current!.value;
-    const password = this.passwordRef.current!.value;
-    const name = this.nameRef.current!.value;
+    const username = this.usernameRef.current!.value.trim();
+    const password = this.passwordRef.current!.value.trim();
+    const name = this.nameRef.current!.value.trim();
 
-    if (username.trim().length !== 0 || password.trim().length !== 0 || name.trim().length !== 0) {
+    if (username.length !== 0 || password.trim().length !== 0 || name.trim().length !== 0) {
       console.log(username);
       console.log(password);
       console.log(name);
@@ -30,6 +30,8 @@ export default class Register extends Component<RegisterProps> {
       });
       console.log(data);
       this.setState({ currentUser: data });
+    } else {
+      console.log("Please fill all");
     }
   };
 

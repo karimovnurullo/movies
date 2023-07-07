@@ -19,8 +19,6 @@ export interface IMovie {
 }
 
 export interface HeaderProps {
-  onRegister: () => void;
-  onLogin: () => void;
   user: IUser | null;
   adminPanel: () => void;
   onNavigate: (pathname: string) => void;
@@ -63,8 +61,6 @@ export interface AppState {
   menus: IMenus[];
   movies: IMovie[];
   filteredMovies: IMovie[];
-  registerBtn: boolean;
-  loginBtn: boolean;
   notFound: boolean;
   currentUser: IUser | null;
   adminPanel: boolean;

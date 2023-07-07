@@ -3,14 +3,13 @@ import React, { Component, FormEvent } from "react";
 import { Header, Home, Register, Login, Panel } from "./components";
 import axios from "axios";
 import { AppState, IMovie, baseURL } from "./components/utils";
+import { json } from "stream/consumers";
 
 export default class App extends Component<{}, AppState> {
   state = {
     menus: [],
     movies: [],
     filteredMovies: [],
-    registerBtn: false,
-    loginBtn: false,
     notFound: false,
     currentUser: null,
     adminPanel: false,
@@ -29,6 +28,7 @@ export default class App extends Component<{}, AppState> {
     try {
       const { data } = await axios.get(`${baseURL}/genres`);
       this.setState({ menus: data });
+      localStorage.setItem("genres", JSON.stringify(data));
     } catch (error) {
       console.log("Error fetching menus:", error);
     }
@@ -37,21 +37,12 @@ export default class App extends Component<{}, AppState> {
     try {
       const { data } = await axios.get(`${baseURL}/movies`);
       this.setState({ movies: data });
+      localStorage.setItem("movies", JSON.stringify(data));
     } catch (error) {
       console.log("Error fetching movies:", error);
     }
   };
 
-  handleLogin = () => {
-    this.setState({ loginBtn: true });
-  };
-
-  handleLoginBack = () => this.setState({ loginBtn: false });
-  handleRegisterBack = () => this.setState({ registerBtn: false });
-
-  handleRegister = () => {
-    this.setState({ registerBtn: true });
-  };
   handleMenuClick = (id: string) => {
     const arr = [...this.state.movies];
     let filteredMovies: IMovie[] = arr.filter(
@@ -85,30 +76,19 @@ export default class App extends Component<{}, AppState> {
   };
   handleAddSelect = (value: string) => {
     console.log(`${value} selected`);
-    // this.setState({ addSelect: value });
   };
   handleNavigate = (pathname: string) => {
     this.setState({ pathname });
   };
   getPage = () => {
-    const {
-      movies,
-      menus,
-      loginBtn,
-      registerBtn,
-      filteredMovies,
-      notFound,
-      currentUser,
-      activeMenu,
-    } = this.state;
+    const { filteredMovies, notFound, currentUser, activeMenu } = this.state;
+    const movies = JSON.parse(localStorage.getItem("movies")!);
+    const menus = JSON.parse(localStorage.getItem("genres")!);
     const {
       handleSearch,
       handleMenuClick,
       handleAllMenus,
-      handleRegister,
-      handleLoginBack,
       handleAdminpanel,
-      handleLogin,
       handleNavigate,
     } = this;
     switch (this.state.pathname) {
@@ -123,8 +103,6 @@ export default class App extends Component<{}, AppState> {
           <>
             <Header
               user={currentUser}
-              onLogin={handleLogin}
-              onRegister={handleRegister}
               adminPanel={handleAdminpanel}
               onNavigate={handleNavigate}
             />
@@ -139,22 +117,10 @@ export default class App extends Component<{}, AppState> {
             />
           </>
         );
-        break;
     }
   };
 
   render() {
-    // if (loginBtn) {
-    //   return <Login home={handleLoginBack} />;
-    // } else if (registerBtn) {
-    //   return (
-    //     <Register
-    //       home={handleRegisterBack}
-    //       onRegisterSubmit={hanleRegisterSubmit}
-    //     />
-    //   );
-    // }
-
     return <div>{this.getPage()}</div>;
   }
 }

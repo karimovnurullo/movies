@@ -4,13 +4,10 @@ import { HeaderProps } from "./utils";
 
 export default class Header extends Component<HeaderProps> {
   handleNavigate = (pathname: string) => {
-    const { onRegister, onLogin, user, adminPanel, onNavigate } = this.props;
+    const { user, adminPanel, onNavigate } = this.props;
     window.history.pushState({}, "", pathname);
     onNavigate(pathname);
-    onRegister();
     adminPanel();
-    onLogin();
-    onRegister();
   };
 
   render() {
