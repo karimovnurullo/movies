@@ -20,10 +20,10 @@ export default class Home extends Component<HomeProps, HomeState> {
     // Pagination calculations
     const indexOfLastMovie = currentPage * moviesPerPage;
     const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-    const currentMovies = movies.slice(indexOfFirstMovie, indexOfLastMovie);
+    const currentMovies = movies ? movies.slice(indexOfFirstMovie, indexOfLastMovie) : [];
 
-    const moviesCounter = movies.length;
-    const totalPages = Math.ceil(movies.length / moviesPerPage);
+    const moviesCounter = movies ? movies.length : 0;
+    const totalPages = Math.ceil(moviesCounter / moviesPerPage);
     const shouldShowPagination = totalPages > 1;
 
     return (
@@ -35,7 +35,7 @@ export default class Home extends Component<HomeProps, HomeState> {
           >
             All movies
           </div>
-          {menus.map((data) => (
+          {menus?.map((data) => (
             <Menu data={data} key={data._id} handleMenuClick={handleMenuClick} activeMenu={activeMenu} />
           ))}
         </div>

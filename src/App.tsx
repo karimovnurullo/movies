@@ -1,9 +1,8 @@
-import React, { Component, FormEvent } from "react";
+import { Component } from "react";
 
 import { Header, Home, Register, Login, Panel } from "./components";
 import axios from "axios";
 import { AppState, IMovie, baseURL } from "./components/utils";
-import { json } from "stream/consumers";
 
 export default class App extends Component<{}, AppState> {
   state = {
@@ -15,7 +14,6 @@ export default class App extends Component<{}, AppState> {
     adminPanel: false,
     addSelect: null,
     activeMenu: false,
-    // pathname: "/panel",
     pathname: window.location.pathname,
   };
 

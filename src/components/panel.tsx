@@ -186,7 +186,7 @@ export default class Panel extends Component<{}, PanelState> {
             dailyRentalRate: parseInt(rate),
           };
           try {
-            const res = await axios.post(`${baseURL}/movies`, movie, {
+            await axios.post(`${baseURL}/movies`, movie, {
               headers: {
                 "x-auth-token": `${TOKEN}`,
               },

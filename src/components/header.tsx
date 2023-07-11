@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { styles } from "./style";
 import { HeaderProps } from "./utils";
 
 export default class Header extends Component<HeaderProps> {
   handleNavigate = (pathname: string) => {
-    const { user, adminPanel, onNavigate } = this.props;
+    const { adminPanel, onNavigate } = this.props;
     window.history.pushState({}, "", pathname);
     onNavigate(pathname);
     adminPanel();
